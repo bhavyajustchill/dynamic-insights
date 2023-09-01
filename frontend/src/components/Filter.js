@@ -387,7 +387,7 @@ function Filter() {
   };
 
   useEffect(() => {
-    console.log("Updated JSON Object:", jsonObject);
+    //console.log("Updated JSON Object:", jsonObject);
   }, [jsonObject]);
   // useEffect(() => {
   //   console.log("Operands:", operands);
@@ -425,11 +425,28 @@ function Filter() {
     }));
   };
 
+  function stringFromKey(inputString,keyToFind){
+    let result= "";
+    if (inputString.includes("{" + keyToFind + ":")) {
+      const findIndex = inputString.indexOf("{" + keyToFind + ":");
+      let tempResult = inputString.substring(findIndex);
+      tempResult = tempResult.replace("{" + keyToFind + ":", "");
+      const closingBraceIndex = tempResult.indexOf("}");
+      if (closingBraceIndex !== -1) {
+        const extractedValue = tempResult.substring(0, closingBraceIndex);
+        result = extractedValue;
+      } 
+    }
+    return result;
+  }
+
   const handleRun = (e) => {
     e.preventDefault();
 
     let filteredResult = [...sampleRecords];
     let equation = jsonObject.equation;
+    let question = jsonObject.question;
+    //console.log(jsonObject);
 
     Object.keys(jsonObject)
       .map((key) => {
@@ -438,12 +455,14 @@ function Filter() {
           //console.log(key);
           jsonObject[key].forEach((filter) => {
             if (filter.key && filter.selectedValue) {
+              
               filteredResult = filteredResult.filter(
-                (record) => record[filter.key] === filter.selectedValue
+                (record) => record[filter.key] === filter.selectedValue//stringFromKey(question,filter.key)
               );
+              //console.log("selectedValue",filter.selectedValue,stringFromKey(question,filter.key))
             }
           });
-          console.log(key,filteredResult.length);
+          //console.log(key,filteredResult.length);
           if(equation.includes(key)) {
             equation = equation.replace("${" + key + "}", filteredResult.length);
           }

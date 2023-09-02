@@ -1,0 +1,33 @@
+{
+  "total": [
+    {
+      "key": "Program",
+      "selectedValue": "MScIT",
+      "values": [
+        "MScIT",
+        "BBA",
+        "Mechanical Engineering",
+        "Medicine",
+        "Electrical Engineering",
+        "Environmental Science",
+        "Marketing",
+        "Psychology",
+        "Civil Engineering",
+        "Art and Design",
+        "BScIT",
+        "BCA"
+      ]
+    },
+    {
+      "key": "Batch",
+      "selectedValue": "2020-2021",
+      "values": [
+        "2020-2021",
+        "2021-2022",
+        "2022-2023"
+      ]
+    }
+  ],
+  "question": "{Program:BScIT} - {Batch:2020-2021} total?",
+  "equation": "total"
+}

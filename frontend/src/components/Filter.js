@@ -274,7 +274,7 @@ function Filter() {
       "Email": "ella.white@example.com",
       "Mobile": "999-777-1111",
       "Program": "BScIT",
-      "Batch": "2020-2021",
+      "Batch": "2021-2022",
       "Consent": "Entrepreneur",
       "CompanyName": "",
       "Designation": "",
@@ -361,6 +361,7 @@ function Filter() {
   const [equation, setEquation] = useState('');
   const [operandName, setOperandName] = useState('');
   const [jsonObject, setJsonObject] = useState({});
+  const [filterOptions, setFilterOptions] = useState([{}]);
   //const [operands, setOperands] = useState({});
 
   const handleKeyChange = (index, event) => {
@@ -386,12 +387,8 @@ function Filter() {
     ]);
   };
 
-  useEffect(() => {
-    //console.log("Updated JSON Object:", jsonObject);
+  useEffect(() => {   
   }, [jsonObject]);
-  // useEffect(() => {
-  //   console.log("Operands:", operands);
-  // }, [operands]);
  
 
   const handleSubmit = (e) => {
@@ -406,9 +403,6 @@ function Filter() {
     //     );
     //   }
     // });
-
-    console.log("Filtered Selection:", filterSelections);
-
     setJsonObject((prevJsonObject) => ({
       ...prevJsonObject,
       [operandName]: filterSelections,
@@ -455,11 +449,10 @@ function Filter() {
           //console.log(key);
           jsonObject[key].forEach((filter) => {
             if (filter.key && filter.selectedValue) {
-              
               filteredResult = filteredResult.filter(
-                (record) => record[filter.key] === filter.selectedValue//stringFromKey(question,filter.key)
+                (record) => record[filter.key] === stringFromKey(question,filter.key)//filter.selectedValue
               );
-              //console.log("selectedValue",filter.selectedValue,stringFromKey(question,filter.key))
+              console.log("selectedValue",filter.selectedValue,stringFromKey(question,filter.key))
             }
           });
           //console.log(key,filteredResult.length);
@@ -470,7 +463,8 @@ function Filter() {
         }
     });
    
-    const result = eval(equation);    
+    const result = eval(equation);        
+    console.log(equation);
     console.log(result);
   };
 
@@ -482,6 +476,7 @@ function Filter() {
       <div className="row">
         <div className="col-md-4">
           {filterSelections.map((filter, index) => (
+            
             <div className="d-flex my-4" key={index}>
               {/* <label>Key:</label> */}
               <select
@@ -508,6 +503,7 @@ function Filter() {
                 ))}
               </select>
             </div>
+
           ))}
           <div className="d-flex align-items-center justify-content-center mt-3">
           <button className="btn btn-success mx-1" onClick={handleAddFilter}>
@@ -567,9 +563,11 @@ function Filter() {
             <tbody>
               {filterSelections.map((item, index) => (
                 <tr key={index}>
-                  {Object.keys(item).map(
-                    (column, index) => column !== "values" && <th key={index}>{item[column]}</th>
-                  )}
+                  {
+                    Object.keys(item).map(
+                      (column, index) => column !== "values" && <th key={index}>{item[column]}</th>
+                    )                    
+                  }
                 </tr>
               ))}
             </tbody>

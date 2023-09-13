@@ -397,10 +397,7 @@ function Filter() {
   const handleAddFilter = () => {
     setKeyChanged(false);
     setValueChanged(false);
-    setFilterSelections([
-      ...filterSelections,
-      { key: "", selectedValue: "", values: [] },
-    ]);
+    setFilterSelections([...filterSelections, { key: "", selectedValue: "", values: [] }]);
   };
 
   useEffect(() => {}, [jsonObject]);
@@ -474,14 +471,9 @@ function Filter() {
         jsonObject[key].forEach((filter) => {
           if (filter.key && filter.selectedValue) {
             filteredResult = filteredResult.filter(
-              (record) =>
-                record[filter.key] === stringFromKey(question, filter.key) //filter.selectedValue
+              (record) => record[filter.key] === stringFromKey(question, filter.key) //filter.selectedValue
             );
-            console.log(
-              "selectedValue",
-              filter.selectedValue,
-              stringFromKey(question, filter.key)
-            );
+            console.log("selectedValue", filter.selectedValue, stringFromKey(question, filter.key));
           }
         });
         //console.log(key,filteredResult.length);
@@ -498,17 +490,16 @@ function Filter() {
 
   return (
     <div>
-      <h1>Dynamic Filter</h1>
+      <h1 className="text-center mt-3">Dynamic Insights</h1>
       <div className="row">
         <div className="col-md-4">
           {filterSelections.map((filter, index) => (
-            <div className="d-flex my-4" key={index}>
+            <div className="d-flex mt-4" key={index}>
               {/* <label>Key:</label> */}
               <select
                 className="form-select"
                 value={filter.key}
-                onChange={(e) => handleKeyChange(index, e)}
-              >
+                onChange={(e) => handleKeyChange(index, e)}>
                 <option value="">Select a Key</option>
                 {Object.keys(sampleRecords[0]).map((key, idx) => (
                   <option key={idx} value={key}>
@@ -521,8 +512,7 @@ function Filter() {
               <select
                 className="form-select"
                 value={filter.selectedValue}
-                onChange={(e) => handleValueChange(index, e)}
-              >
+                onChange={(e) => handleValueChange(index, e)}>
                 <option value="">Select a Value</option>
                 {filter.values.map((value, idx) => (
                   <option key={idx} value={value}>
@@ -532,19 +522,19 @@ function Filter() {
               </select>
             </div>
           ))}
-          <div className="d-flex align-items-center justify-content-center mt-3">
-            <button className="btn btn-success mx-1" onClick={handleAddFilter}>
+          <div className="d-flex align-items-center justify-content-center mt-2">
+            <button className="btn btn-success w-25 me-1" onClick={handleAddFilter}>
               Add
             </button>
             <input
               id="operandName"
-              className="form-control ms-4"
+              className="form-control mx-1"
               placeholder="Enter Operand Name..."
               type="text"
               name="operandName"
               onChange={(e) => setOperandName(e.target.value)}
             />
-            <button className="btn btn-primary mx-1" onClick={handleSubmit}>
+            <button className="btn btn-primary ms-1 w-50" onClick={handleSubmit}>
               Submit
             </button>
           </div>
@@ -553,7 +543,7 @@ function Filter() {
           <input
             id="question"
             className="form-control mt-4 w-100"
-            placeholder="Enter Question"
+            placeholder="Enter Question..."
             type="text"
             value={question}
             name="question"
@@ -561,46 +551,49 @@ function Filter() {
           />
           <input
             id="equation"
-            className="form-control mt-1 w-100"
-            placeholder="Enter Equation"
+            className="form-control mt-2 w-100"
+            placeholder="Enter Equation..."
             type="text"
             name="equation"
             onChange={(e) => setEquation(e.target.value)}
           />
-          <div className="d-grid">
-            <button className="btn btn-warning mt-2" onClick={handleSave}>
+          <div className="d-flex justify-content-between">
+            <button className="btn w-100 me-1 btn-warning mt-2" onClick={handleSave}>
               Save
             </button>
-            <button className="btn btn-danger mt-2" onClick={handleRun}>
+            <button className="btn w-100 ms-1 btn-danger mt-2" onClick={handleRun}>
               Run
             </button>
           </div>
         </div>
         <div className="col-md-4">
-          <table className="table table-responsive">
-            <thead className="table-dark">
-              <tr>
-                {Object.keys(filterSelections[0]).map(
-                  (item, index) =>
-                    item !== "values" && (
-                      <th key={index}>
-                        {item.charAt(0).toUpperCase() + item.slice(1)}
-                      </th>
-                    )
-                )}
-              </tr>
-            </thead>
-            <tbody>
-              {filterSelections.map((item, index) => (
-                <tr key={index}>
-                  {Object.keys(item).map(
-                    (column, index) =>
-                      column !== "values" && <th key={index}>{item[column]}</th>
+          {filterSelections[0].key !== "" ? (
+            <table className="mt-4 table table-responsive table-bordered">
+              <thead className="table-dark">
+                <tr>
+                  {Object.keys(filterSelections[0]).map(
+                    (item, index) =>
+                      item !== "values" && (
+                        <th key={index} className="text-center">
+                          {item.charAt(0).toUpperCase() + item.slice(1)}
+                        </th>
+                      )
                   )}
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {filterSelections.map((item, index) => (
+                  <tr key={index}>
+                    {Object.keys(item).map(
+                      (column, index) => column !== "values" && <td key={index}>{item[column]}</td>
+                    )}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <h4 className="text-center mt-4">No Key/Values Selected!</h4>
+          )}
         </div>
       </div>
     </div>

@@ -376,12 +376,10 @@ function Filter() {
       setQuestion(`${question}{${event.target.value}:`);
       setKeyChanged(true);
     } else {
-      let tempQuestion = editKeyValues("{");
-      tempQuestion += event.target.value + ":";
-      setQuestion(tempQuestion);
-      setKeyChanged(true);
+      convertKeyValuePairsToQuestions(event.target.value);
     }
     setFilterSelections(newFilterSelections);
+    console.log("filterSelections", filterSelections);
   };
 
   const handleValueChange = (index, event) => {
@@ -391,10 +389,7 @@ function Filter() {
       setQuestion(`${question} ${event.target.value}}`);
       setValueChanged(true);
     } else {
-      let tempValue = editKeyValues(":");
-      tempValue += event.target.value + "}";
-      setQuestion(tempValue);
-      setValueChanged(true);
+      convertKeyValuePairsToQuestions();
     }
     setFilterSelections(newFilterSelections);
   };
@@ -428,9 +423,16 @@ function Filter() {
     }));
   };
 
-  function editKeyValues(symbol) {
-    const lastIndex = question.lastIndexOf(symbol);
-    return question.substring(0, lastIndex + 1);
+  function convertKeyValuePairsToQuestions(newKey) {
+    let tempQuestion = "";
+    for (const item of filterSelections) {
+      if (item.key === newKey) {
+        tempQuestion += `{${item.key}: `;
+      } else {
+        tempQuestion += `{${item.key}: ${item.selectedValue}}`;
+      }
+    }
+    setQuestion(tempQuestion);
   }
 
   const handleSave = (e) => {

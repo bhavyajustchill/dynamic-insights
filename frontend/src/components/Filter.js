@@ -397,7 +397,10 @@ function Filter() {
   const handleAddFilter = () => {
     setKeyChanged(false);
     setValueChanged(false);
-    setFilterSelections([...filterSelections, { key: "", selectedValue: "", values: [] }]);
+    setFilterSelections([
+      ...filterSelections,
+      { key: "", selectedValue: "", values: [] },
+    ]);
   };
 
   useEffect(() => {}, [jsonObject]);
@@ -471,9 +474,14 @@ function Filter() {
         jsonObject[key].forEach((filter) => {
           if (filter.key && filter.selectedValue) {
             filteredResult = filteredResult.filter(
-              (record) => record[filter.key] === stringFromKey(question, filter.key) //filter.selectedValue
+              (record) =>
+                record[filter.key] === stringFromKey(question, filter.key) //filter.selectedValue
             );
-            console.log("selectedValue", filter.selectedValue, stringFromKey(question, filter.key));
+            console.log(
+              "selectedValue",
+              filter.selectedValue,
+              stringFromKey(question, filter.key)
+            );
           }
         });
         //console.log(key,filteredResult.length);
@@ -499,7 +507,8 @@ function Filter() {
               <select
                 className="form-select"
                 value={filter.key}
-                onChange={(e) => handleKeyChange(index, e)}>
+                onChange={(e) => handleKeyChange(index, e)}
+              >
                 <option value="">Select a Key</option>
                 {Object.keys(sampleRecords[0]).map((key, idx) => (
                   <option key={idx} value={key}>
@@ -512,7 +521,8 @@ function Filter() {
               <select
                 className="form-select"
                 value={filter.selectedValue}
-                onChange={(e) => handleValueChange(index, e)}>
+                onChange={(e) => handleValueChange(index, e)}
+              >
                 <option value="">Select a Value</option>
                 {filter.values.map((value, idx) => (
                   <option key={idx} value={value}>
@@ -523,7 +533,10 @@ function Filter() {
             </div>
           ))}
           <div className="d-flex align-items-center justify-content-center mt-2">
-            <button className="btn btn-success w-25 me-1" onClick={handleAddFilter}>
+            <button
+              className="btn btn-success w-25 me-1"
+              onClick={handleAddFilter}
+            >
               Add
             </button>
             <input
@@ -534,7 +547,10 @@ function Filter() {
               name="operandName"
               onChange={(e) => setOperandName(e.target.value)}
             />
-            <button className="btn btn-primary ms-1 w-50" onClick={handleSubmit}>
+            <button
+              className="btn btn-primary ms-1 w-50"
+              onClick={handleSubmit}
+            >
               Submit
             </button>
           </div>
@@ -558,10 +574,16 @@ function Filter() {
             onChange={(e) => setEquation(e.target.value)}
           />
           <div className="d-flex justify-content-between">
-            <button className="btn w-100 me-1 btn-warning mt-2" onClick={handleSave}>
+            <button
+              className="btn w-100 me-1 btn-secondary mt-2"
+              onClick={handleSave}
+            >
               Save
             </button>
-            <button className="btn w-100 ms-1 btn-danger mt-2" onClick={handleRun}>
+            <button
+              className="btn w-100 ms-1 btn-warning mt-2"
+              onClick={handleRun}
+            >
               Run
             </button>
           </div>
@@ -585,7 +607,10 @@ function Filter() {
                 {filterSelections.map((item, index) => (
                   <tr key={index}>
                     {Object.keys(item).map(
-                      (column, index) => column !== "values" && <td key={index}>{item[column]}</td>
+                      (column, index) =>
+                        column !== "values" && (
+                          <td key={index}>{item[column]}</td>
+                        )
                     )}
                   </tr>
                 ))}

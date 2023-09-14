@@ -405,24 +405,6 @@ function Filter() {
 
   useEffect(() => {}, [jsonObject]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Do something with the operandName value, like sending it to an API or processing it.
-    console.log("Operand Name:", operandName);
-    //let filteredResult = [...sampleRecords];
-    // filterSelections.forEach((filter) => {
-    //   if (filter.key && filter.selectedValue) {
-    //     filteredResult = filteredResult.filter(
-    //       (record) => record[filter.key] === filter.selectedValue
-    //     );
-    //   }
-    // });
-    setJsonObject((prevJsonObject) => ({
-      ...prevJsonObject,
-      [operandName]: filterSelections,
-    }));
-  };
-
   function convertKeyValuePairsToQuestions(newKey) {
     let tempQuestion = "";
     for (const item of filterSelections) {
@@ -442,6 +424,7 @@ function Filter() {
       question: question,
       equation: equation,
     }));
+    console.log("Save Button", jsonObject);
   };
 
   function stringFromKey(inputString, keyToFind) {
@@ -494,6 +477,26 @@ function Filter() {
     const result = eval(equation);
     console.log(equation);
     console.log(result);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Do something with the operandName value, like sending it to an API or processing it.
+    console.log("Operand Name:", operandName);
+    //let filteredResult = [...sampleRecords];
+    // filterSelections.forEach((filter) => {
+    //   if (filter.key && filter.selectedValue) {
+    //     filteredResult = filteredResult.filter(
+    //       (record) => record[filter.key] === filter.selectedValue
+    //     );
+    //   }
+    // });
+    setJsonObject((prevJsonObject) => ({
+      ...prevJsonObject,
+      [operandName]: filterSelections,
+    }));
+    console.log("Submit Button filterSelections", filterOptions);
+    console.log("Submit Button", jsonObject);
   };
 
   return (
@@ -575,7 +578,7 @@ function Filter() {
           />
           <div className="d-flex justify-content-between">
             <button
-              className="btn w-100 me-1 btn-secondary mt-2"
+              className="btn w-100 me-1 btn-dark mt-2"
               onClick={handleSave}
             >
               Save
@@ -589,36 +592,48 @@ function Filter() {
           </div>
         </div>
         <div className="col-md-4">
-          {filterSelections[0].key !== "" ? (
-            <table className="mt-4 table table-responsive table-bordered">
-              <thead className="table-dark">
-                <tr>
-                  {Object.keys(filterSelections[0]).map(
-                    (item, index) =>
-                      item !== "values" && (
-                        <th key={index} className="text-center">
-                          {item.charAt(0).toUpperCase() + item.slice(1)}
-                        </th>
-                      )
-                  )}
-                </tr>
-              </thead>
-              <tbody>
-                {filterSelections.map((item, index) => (
-                  <tr key={index}>
-                    {Object.keys(item).map(
-                      (column, index) =>
-                        column !== "values" && (
-                          <td key={index}>{item[column]}</td>
+          <div className="row">
+            {filterSelections[0].key !== "" ? (
+              <table className="mt-4 table table-responsive table-bordered">
+                <thead className="table-dark">
+                  <tr>
+                    {Object.keys(filterSelections[0]).map(
+                      (item, index) =>
+                        item !== "values" && (
+                          <th key={index} className="text-center">
+                            {item.charAt(0).toUpperCase() + item.slice(1)}
+                          </th>
                         )
                     )}
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          ) : (
-            <h4 className="text-center mt-4">No Key/Values Selected!</h4>
-          )}
+                </thead>
+                <tbody>
+                  {filterSelections.map((item, index) => (
+                    <tr key={index}>
+                      {Object.keys(item).map(
+                        (column, index) =>
+                          column !== "values" && (
+                            <td key={index}>{item[column]}</td>
+                          )
+                      )}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <h4 className="text-center mt-4">No Key/Values Selected!</h4>
+            )}
+          </div>
+          <div className="row">
+            {jsonObject.length > 0 ? (
+              <table className="table table-responsive">
+                <thead className="table-dark">
+                  <th className="text-center">Question</th>
+                  <th className="text-center">Equation</th>
+                </thead>
+              </table>
+            ) : null}
+          </div>
         </div>
       </div>
     </div>

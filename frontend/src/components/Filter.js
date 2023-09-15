@@ -403,7 +403,9 @@ function Filter() {
     ]);
   };
 
-  useEffect(() => {}, [jsonObject]);
+  useEffect(() => {
+    console.log("JSON Object", jsonObject);
+  }, [jsonObject]);
 
   function convertKeyValuePairsToQuestions(newKey) {
     let tempQuestion = "";
@@ -467,9 +469,10 @@ function Filter() {
             );
           }
         });
-        //console.log(key,filteredResult.length);
+        console.log("FilteredResult", filteredResult);
+        console.log(key, filteredResult.length);
         if (equation.includes(key)) {
-          equation = equation.replace("${" + key + "}", filteredResult.length);
+          equation = equation.replace("${" + key + "}", jsonObject[key].length);
         }
       }
     });
@@ -482,7 +485,7 @@ function Filter() {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Do something with the operandName value, like sending it to an API or processing it.
-    console.log("Operand Name:", operandName);
+    // console.log("Operand Name:", operandName);
     //let filteredResult = [...sampleRecords];
     // filterSelections.forEach((filter) => {
     //   if (filter.key && filter.selectedValue) {
@@ -491,12 +494,21 @@ function Filter() {
     //     );
     //   }
     // });
-    setJsonObject((prevJsonObject) => ({
-      ...prevJsonObject,
-      [operandName]: filterSelections,
-    }));
-    console.log("Submit Button filterSelections", filterOptions);
-    console.log("Submit Button", jsonObject);
+
+    if (jsonObject == {}) {
+      let tempJsonObject = {
+        [operandName]: filterSelections,
+      };
+      setJsonObject(tempJsonObject);
+    } else {
+      setJsonObject((prevJsonObject) => ({
+        ...prevJsonObject,
+        [operandName]: filterSelections,
+      }));
+    }
+
+    console.log("Submit Button filterSelections", filterSelections);
+    console.log("Submit Button jsonObject", jsonObject);
   };
 
   return (
